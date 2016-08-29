@@ -4,6 +4,8 @@ var settings = require("./settings");
 
 console.log( "d3 version is " + d3.version );
 
+window.d3 = d3;
+
 // VARS ********************************
 var positions = {G:"Goalkeeper", D:"Defender", M:"Midfielder", F:"Forward"};
 
@@ -24,13 +26,15 @@ var reload = function(){
         data = rows;
         data.forEach(function(d){
             d.Pos = positions[d.Pos];
+
+            // если в массиве teams индекс данного TeamID < 0 (такой элемент отсутствует в массиве)
+            // то добавляем его в массив. Соответственно, если он уже там есть, пропускаем
             if(teams.indexOf(d.TeamID) < 0) {
                 teams.push(d.TeamID);
                 teams[d.TeamID] = d.Team;
             }
         });
 
-    console.log(teams);
     var options = teamSelector.selectAll("option")
         .data(teams)
         .enter()
@@ -77,11 +81,16 @@ var redraw = function(roster){
 };
 
 var selectTeam = function(teamId){
+    // фильтруем data так, чтобы в выборке были только те элементы
+    // для которых TeamID совпадает с запрашиваемым teamId
     var roster = data.filter(function(d){
-        return d['teamID'] == teamId;
+        return d['TeamID'] == teamId;
     });
+
     d3.select("#team-name").text(teams[teamId] + " Roster");
-    document.getElementById('team-selector').value = teamId;
+    // document.getElementById('team-selector').value = teamId;
+    teamSelector.value = teamId;
+
     redraw(roster);
 };
 
