@@ -31,20 +31,24 @@ var reload = function(){
 
 // REDRAW ********************************
 var redraw = function(){
+
     thead.selectAll("tr")
         .data([columns])
         .enter()
         .append("tr")
-        .selectAll("th")
-        .data(function(d) { return d; })
-        .enter()
-        .append("th")
-        .text(function(d) { return d; });
+            .selectAll("th")
+            .data(function(d) { return d; })
+            .enter()
+            .append("th")
+            .text(function(d) { return d; })
+    ;
 
     var rows = tbody.selectAll("tr")
         .data(data);
     rows.enter().append("tr");
-    rows.exit().remove()
+    // если мы уже загрузили объект
+    // и хотим загрузить другой, то если он короче, удаляет оставшиеся <tr>
+    rows.exit().remove();
 
     var cells = rows.selectAll("td")
         .data(function(row){
@@ -52,6 +56,7 @@ var redraw = function(){
                 return row[col];
             });
         });
+
     cells.enter().append("td");
     cells.text(function(d){ return d; });
 };
