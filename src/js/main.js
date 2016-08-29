@@ -3,29 +3,57 @@ var classie = require("./classie");
 var settings = require("./settings");
 
 console.log( "d3 version is " + d3.version );
-window.d3 = d3;
 
-var content = d3.select(".content");
-var ul = content.append("ul");
-var li;
+// VARS ********************************
+var positions = {G:"Goalkeeper", D:"Defender", M:"Midfielder", F:"Forward"};
+var columns = ["No", "Name", "Pos"];
 
-var data1 = ["Item 1", "Item 2", "Item 3"];
-var data2 = ["Item A", "Item B", "Item C", "Item D"];
-var data3 = ["Item 100", "Item 101", "Item 102", "Item 103", "Item 104"];
+window.data = [];
+var table = d3.select(".content")
+    .append("table")
+    .classed("table", true);
+var thead = table.append("thead");
+var tbody = table.append("tbody");
 
-li = ul.selectAll("li").data(data1).enter().append("li")
-    .text(function(d){
-        return d;
-    });
 
-li = ul.selectAll("li").data(data2).enter().append("li")
-    .text(function(d, i){
-        return d + " | " + i;
-    });
 
-li = ul.selectAll("li").data(data3).enter().append("li")
-    .text(function(d){
-        return d;
-    });
+// RELOAD ********************************
+var reload = function(){
+    d3.tsv('/data/afcw-roster.tsv', function(rows){
+        data = rows;
+        data.forEach(function(d){
+            d.Pos = positions[d.Pos];
+        });
+        redraw();
+    })
+};
 
-li = ul.selectAll("li").data(data1).exit().remove();
+
+// REDRAW ********************************
+var redraw = function(){
+    thead.selectAll("tr")
+        .data([columns])
+        .enter()
+        .append("tr")
+        .selectAll("th")
+        .data(function(d) { return d; })
+        .enter()
+        .append("th")
+        .text(function(d) { return d; });
+
+    var rows = tbody.selectAll("tr")
+        .data(data);
+    rows.enter().append("tr");
+    rows.exit().remove()
+
+    var cells = rows.selectAll("td")
+        .data(function(row){
+            return columns.map(function(col){
+                return row[col];
+            });
+        });
+    cells.enter().append("td");
+    cells.text(function(d){ return d; });
+};
+
+reload();
