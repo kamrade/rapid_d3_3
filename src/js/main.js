@@ -9,7 +9,7 @@ var positions = {G:"Goalkeeper", D:"Defender", M:"Midfielder", F:"Forward"};
 
 var columns = ["No", "Name", "Team", "Pos"];
 
-window.data = [];
+var data = [];
 var teams = [];
 var table = d3.select(".content")
     .append("table")
@@ -24,14 +24,33 @@ var reload = function(){
         data = rows;
         data.forEach(function(d){
             d.Pos = positions[d.Pos];
+            if(teams.indexOf(d.TeamID) < 0) {
+                teams.push(d.TeamID);
+                teams[d.TeamID] = d.Team;
+            }
         });
-        redraw();
+
+    console.log(teams);
+    var options = teamSelector.selectAll("option")
+        .data(teams)
+        .enter()
+            .append("option")
+            .attr("value", function(d){ return d; } )
+            .text(function(d) { return teams[d]; })
+            .sort(function(a,b) { return d3.ascending(a, b); });
+
+        selectTeam("afc-wimbledon");
     })
 };
 
+var teamSelector = d3.select(".page-title")
+    .append("select")
+    .on("change", function(){ selectTeam(this.value); })
+    .attr("id", "team-selector");
 
 // REDRAW ********************************
-var redraw = function(){
+var redraw = function(roster){
+
     thead.selectAll("th")
         .data(columns)
         .enter()
@@ -40,7 +59,7 @@ var redraw = function(){
     ;
 
     var rows = tbody.selectAll("tr")
-        .data(data);
+        .data(roster);
     
     rows.enter().append("tr");
     rows.exit().remove();
@@ -55,6 +74,15 @@ var redraw = function(){
     cells.enter().append("td");
     cells.text(function(d){ return d; });
 
+};
+
+var selectTeam = function(teamId){
+    var roster = data.filter(function(d){
+        return d['teamID'] == teamId;
+    });
+    d3.select("#team-name").text(teams[teamId] + " Roster");
+    document.getElementById('team-selector').value = teamId;
+    redraw(roster);
 };
 
 reload();
