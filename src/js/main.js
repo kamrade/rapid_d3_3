@@ -58,8 +58,16 @@ var redraw = function(roster){
     thead.selectAll("th")
         .data(columns)
         .enter()
-        .append("th")
-        .text(function(d){ return d; })
+            .append("th")
+            .on("click", function(d){ // d - это название колонки
+                tbody.selectAll("tr")
+                    .sort(function(a,b){
+                        return (d === "No")
+                            ? d3.ascending(+a[d], +b[d])
+                            : d3.ascending(a[d], b[d]);
+                    })
+            })
+            .text(function(d){ return d; })
     ;
 
     var rows = tbody.selectAll("tr")
