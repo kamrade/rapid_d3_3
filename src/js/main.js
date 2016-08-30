@@ -88,8 +88,10 @@ var selectTeam = function(teamId){
     });
 
     d3.select("#team-name").text(teams[teamId] + " Roster");
-    // document.getElementById('team-selector').value = teamId;
-    teamSelector.value = teamId;
+    document.getElementById('team-selector').value = teamId;
+
+    // console.log(teamSelector[0][0]);
+    // teamSelector[0][0].value = teamId;
 
     redraw(roster);
 };
