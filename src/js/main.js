@@ -2,17 +2,16 @@ var d3 = require("d3");
 var classie = require("./classie");
 var settings = require("./settings");
 
-console.log( "d3 version is " + d3.version );
+// window.d3 = d3;
 
-window.d3 = d3;
 
 // VARS ********************************
 var positions = {G:"Goalkeeper", D:"Defender", M:"Midfielder", F:"Forward"};
-
-var columns = ["No", "Name", "Team", "Pos"];
+var columns = ["No", "Name",  "Pos"];
 
 var data = [];
 var teams = [];
+
 var table = d3.select(".content")
     .append("table")
     .classed("table", true);
@@ -27,8 +26,7 @@ var reload = function(){
         data.forEach(function(d){
             d.Pos = positions[d.Pos];
 
-            // если в массиве teams индекс данного TeamID < 0 (такой элемент отсутствует в массиве)
-            // то добавляем его в массив. Соответственно, если он уже там есть, пропускаем
+            // наполнение массива teams
             if(teams.indexOf(d.TeamID) < 0) {
                 teams.push(d.TeamID);
                 teams[d.TeamID] = d.Team;
@@ -47,10 +45,12 @@ var reload = function(){
     })
 };
 
+// TEAM-SELECTOR ********************************
 var teamSelector = d3.select(".page-title")
     .append("select")
     .on("change", function(){ selectTeam(this.value); })
     .attr("id", "team-selector");
+
 
 // REDRAW ********************************
 var redraw = function(roster){
