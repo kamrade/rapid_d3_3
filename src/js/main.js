@@ -75,12 +75,18 @@ var redraw = function(roster){
 					? d3.ascending(+a[d], +b[d])
 					: d3.ascending(a[d], b[d]);
 			})
+		.style("background-color", function(d, i){
+			return (i%2) ? "#efefef" : "#fff";
+		});
 	});
 	
 	// добавляем строки
 	var rows = tbody.selectAll("tr")
 		.data(roster);
-	rows.enter().append("tr");
+	rows.enter().append("tr")
+		.style("background-color", function(d, i){
+			return (i%2) ? "#efefef" : "#fff";
+		});
 	rows.exit().remove();
 
 	// добавляем ячейки
