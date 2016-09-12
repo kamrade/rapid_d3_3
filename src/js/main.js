@@ -64,7 +64,7 @@ var redraw = function(roster){
 
     var rows = tbody.selectAll("tr")
         .data(roster);
-    
+
     rows.enter().append("tr");
     rows.exit().remove();
 
@@ -89,7 +89,7 @@ var selectTeam = function(teamId){
 
     d3.select("#team-name").text(teams[teamId] + " Roster");
     // document.getElementById('team-selector').value = teamId;
-    teamSelector.value = teamId;
+    teamSelector[0][0].value = teamId;
 
     redraw(roster);
 };
