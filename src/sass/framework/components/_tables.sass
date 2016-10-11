@@ -1,0 +1,77 @@
+table
+	font-weight: 400
+	background-color: transparent
+
+thead
+	display: table-header-group
+.table
+	border-spacing: 0
+	border-collapse: collapse
+	width: 100%
+	max-width: 100%
+	margin-bottom: 2*$base-unit
+	td, th
+		background-color: $c-bg
+
+	> caption
+		padding: $base-unit*2 0
+		padding-left: $base-unit
+		color: $c-text-light
+		text-align: left
+		background-color: $c-text-light
+		color: $c-bg
+
+
+	> thead,
+	> tbody,
+	> tfoot,
+		> tr
+			>th,
+			> td
+				padding: $base-unit*2
+				line-height: $line-height
+				vertical-align: top
+				border-top: 1px solid $c-border
+				text-align: left
+
+	> caption + thead,
+	> colgroup + thead,
+	> thead:first-child
+		tr:first-child
+			th, td
+				border-top: 2px solid $c-border
+
+	> tbody:last-child
+		tr:last-child
+			td
+				border-bottom: 2px solid $c-border
+
+
+	> thead > tr > th
+		vertical-align: bottom
+		border-bottom: 2px solid $c-border
+
+// table condenced
+.table-condenced
+	> thead,
+	> tbody,
+	> tfoot
+		> tr
+			> th,
+			> td
+				padding: $base-unit/2
+
+// table bordered
+.table-bordered
+	borer: 1px solid $c-border
+	> thead,
+	> tbody,
+	> tfoot
+		> tr
+			> th,
+			> td
+				border: 1px solid $c-border
+	> thead > tr
+		> th,
+		> td
+			border-bottom-width: 2px

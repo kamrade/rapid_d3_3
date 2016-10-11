@@ -42,6 +42,7 @@
     "watchify": "^3.4.0"
   },
   "dependencies": {
+    "materialize-css": "^0.97.7",
     "normalize.css": "^4.2.0"
   }
 }

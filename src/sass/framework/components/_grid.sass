@@ -1,0 +1,57 @@
+
+
+.container
+	padding: 0 $s-gutter-width
+	margin: 0 auto
+	max-width: $s-max-width
+	min-width: $s-min-width
+	+clearfix
+
+
+.row
+	margin-left: ($s-gutter-width / -2)
+	margin-right: ($s-gutter-width / -2)
+	+clearfix
+
+.col
+	box-sizing: border-box
+	padding: 0 $s-gutter-width / 2
+	position: relative
+	min-height: 1px
+	margin-left: 0
+
+	@media #{$tablet}
+		$i: 1
+		@while $i <= $columns-count
+			$column-width: unquote((100 / ($columns-count / $i)) + '%')
+			&.s#{$i}
+				width: $column-width
+				float: left
+			$i: $i + 1
+
+	@media #{$tablet-big}
+		$i: 1
+		@while $i <= $columns-count
+			$column-width: unquote((100 / ($columns-count / $i)) + '%')
+			&.m#{$i}
+				width: $column-width
+				float: left
+			$i: $i + 1
+
+	@media #{$desktop}
+		$i: 1
+		@while $i <= $columns-count
+			$column-width: unquote((100 / ($columns-count / $i)) + '%')
+			&.l#{$i}
+				width: $column-width
+				float: left
+			$i: $i + 1
+
+	@media #{$desktop-hd}
+		$i: 1
+		@while $i <= $columns-count
+			$column-width: unquote((100 / ($columns-count / $i)) + '%')
+			&.xl#{$i}
+				width: $column-width
+				float: left
+			$i: $i + 1
