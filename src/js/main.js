@@ -2,7 +2,10 @@ var d3 = require("d3");
 var classie = require("./classie");
 var settings = require("./settings");
 
-// window.d3 = d3;
+var results = require("./results");
+
+results();
+
 
 // VARS ********************************
 var positions = {G:"Goalkeeper", D:"Defender", M:"Midfielder", F:"Forward"};
@@ -15,7 +18,8 @@ var teams = [];
 
 var table = d3.select(".content")
 	.append("table")
-	.classed("table", true);
+	.classed("table", true)
+	.classed("table-condenced", true);
 var thead = table.append("thead").append("tr");
 var tbody = table.append("tbody");
 
@@ -79,7 +83,7 @@ var redraw = function(roster){
 			return (i%2) ? "#efefef" : "#fff";
 		});
 	});
-	
+
 	// добавляем строки
 	var rows = tbody.selectAll("tr")
 		.data(roster);
@@ -114,7 +118,7 @@ var selectTeam = function(teamId){
 		columns = columnsNormal;
 		var roster = data.filter(function(d){
 			return d['TeamID'] == teamId;
-		});		
+		});
 	}
 
 	d3.select("#team-name").text((teams[teamId] || "All") + " Roster");
