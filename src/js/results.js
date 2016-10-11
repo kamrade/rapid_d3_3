@@ -19,6 +19,9 @@ module.exports = function() {
 		.linear()
 		.range([height - margin.bottom, margin.top]);
 
+	var xAxis = d3.svg.axis().scale(x).orient('bottom');
+	var yAxis = d3.svg.axis().scale(y).orient('left');
+
 	var reload = function(){
 		d3.tsv('../data/afcw-results.tsv', function(rows){
 			redraw(rows);
@@ -26,8 +29,6 @@ module.exports = function() {
 	};
 
 	var redraw = function(data){
-
-		console.log(data);
 
 		x.domain(data.map(function(d,i){ return i; }));
 		y.domain([ 0, d3.max(data, function(d){ return d.GoalsScored; }) ] );
@@ -44,7 +45,29 @@ module.exports = function() {
 			.attr('y', function(d){
 				return y(d.GoalsScored);
 			})
-			.attr('height', function(d){ return y(0) - y(d.GoalsScored); });
+			.attr('height', function(d){ return y(0) - y(d.GoalsScored); })
+			.attr('fill', '#df7592');
+
+
+		var axisData = [
+			{axis: xAxis, dx: 0, dy: (height - margin.bottom), clazz: 'x'},
+			{axis: yAxis, dx: margin.left, dy: 0, clazz: 'y'}
+		];
+
+		var axis = svg.selectAll('g.axis')
+			.data(axisData);
+
+		axis.enter()
+			.append('g')
+			.classed('axis', true);
+		axis.each(function(d){
+			d3.select(this)
+				.attr('transform', 'translate('+d.dx+','+d.dy+')')
+				.classed(d.clazz, true)
+				.call(d.axis);
+		});
+
+
 	};
 
 	reload();
